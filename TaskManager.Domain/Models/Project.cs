@@ -21,7 +21,7 @@
         {
             if (name.Length > MAX_PROJECTNAME_LENGTH)
             {
-                throw new ArgumentException($"Username must not exceed {MAX_PROJECTNAME_LENGTH} characters.");
+                throw new ArgumentException($"Project name must not exceed {MAX_PROJECTNAME_LENGTH} characters.");
             }
 
             return new Project(id, name, ownerId);
