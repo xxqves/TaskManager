@@ -3,4 +3,5 @@
   <Project Path="TaskManager.Application/TaskManager.Application.csproj" />
   <Project Path="TaskManager.Domain/TaskManager.Domain.csproj" />
   <Project Path="TaskManager.Infrastructure/TaskManager.Infrastructure.csproj" />
+  <Project Path="TaskManager.Persistence/TaskManager.Persistence.csproj" Id="0221ac8f-78c0-48ec-9677-7c08b51c9de1" />
 </Solution>
