@@ -1,4 +1,17 @@
 services:
+  taskmanager-webapi:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      - ConnectionStrings__AppDbContext=Host=taskmanager-postgres;Database=${POSTGRES_DB};Username=${POSTGRES_USER};Password=${POSTGRES_PASSWORD}
+    container_name: taskmanager-webapi
+    depends_on:
+      taskmanager-postgres:
+        condition: service_healthy
+
   taskmanager-postgres:
     image: postgres:18.3-bookworm
     ports:

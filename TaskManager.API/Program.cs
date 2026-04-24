@@ -10,7 +10,7 @@ namespace TaskManager.API
             var builder = WebApplication.CreateBuilder(args);
 
             builder.Services.AddDbContext<AppDbContext>(options =>
-                options.UseNpgsql(builder.Configuration.GetConnectionString("Default")));
+                options.UseNpgsql(builder.Configuration.GetConnectionString("AppDbContext")));
 
             var app = builder.Build();
 
