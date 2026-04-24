@@ -10,9 +10,16 @@ namespace TaskManager.API
             var builder = WebApplication.CreateBuilder(args);
 
             builder.Services.AddDbContext<AppDbContext>(options =>
-                options.UseNpgsql(builder.Configuration.GetConnectionString("Default")));
+                options.UseNpgsql(builder.Configuration.GetConnectionString("AppDbContext")));
 
             var app = builder.Build();
+
+            using (var scope = app.Services.CreateScope())
+            {
+                var dbContext = scope.ServiceProvider.GetService<AppDbContext>();
+
+                dbContext!.Database.Migrate();
+            }
 
             app.MapGet("/", () => "Hello World!");
 
