@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using TaskManager.Application.Interfaces;
 using TaskManager.Application.Services;
 using TaskManager.Persistence;
+using TaskManager.Persistence.Repositories;
 
 namespace TaskManager.API
 {
@@ -15,6 +16,9 @@ namespace TaskManager.API
                 options.UseNpgsql(builder.Configuration.GetConnectionString("AppDbContext")));
 
             builder.Services.AddScoped<IAuthService, AuthService>();
+            builder.Services.AddScoped<IUserRepository, UserRepository>();
+
+            builder.Services.AddControllers();
 
             builder.Services.AddSwaggerGen();
 
@@ -30,15 +34,9 @@ namespace TaskManager.API
             app.UseSwagger();
             app.UseSwaggerUI();
 
-            app.Use(async (context, next) =>
-            {
-                if (context.Request.Path == "/")
-                {
-                    context.Response.Redirect("swagger/index.html");
-                }
+            app.MapControllers();
 
-                await next();
-            });
+            app.MapGet("/", () => Results.Redirect("/swagger"));
 
             app.Run();
         }
