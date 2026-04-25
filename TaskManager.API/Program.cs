@@ -1,4 +1,6 @@
 using Microsoft.EntityFrameworkCore;
+using TaskManager.Application.Interfaces;
+using TaskManager.Application.Services;
 using TaskManager.Persistence;
 
 namespace TaskManager.API
@@ -11,6 +13,8 @@ namespace TaskManager.API
 
             builder.Services.AddDbContext<AppDbContext>(options =>
                 options.UseNpgsql(builder.Configuration.GetConnectionString("AppDbContext")));
+
+            builder.Services.AddScoped<IAuthService, AuthService>();
 
             var app = builder.Build();
 
