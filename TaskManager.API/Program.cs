@@ -16,6 +16,8 @@ namespace TaskManager.API
 
             builder.Services.AddScoped<IAuthService, AuthService>();
 
+            builder.Services.AddSwaggerGen();
+
             var app = builder.Build();
 
             using (var scope = app.Services.CreateScope())
@@ -25,7 +27,18 @@ namespace TaskManager.API
                 dbContext!.Database.Migrate();
             }
 
-            app.MapGet("/", () => "Hello World!");
+            app.UseSwagger();
+            app.UseSwaggerUI();
+
+            app.Use(async (context, next) =>
+            {
+                if (context.Request.Path == "/")
+                {
+                    context.Response.Redirect("swagger/index.html");
+                }
+
+                await next();
+            });
 
             app.Run();
         }
