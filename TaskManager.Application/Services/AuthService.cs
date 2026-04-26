@@ -7,10 +7,12 @@ namespace TaskManager.Application.Services
     public class AuthService : IAuthService
     {
         private readonly IUserRepository _userRepository;
+        private readonly IJwtTokenService _jwtTokenService;
 
-        public AuthService(IUserRepository userRepository)
+        public AuthService(IUserRepository userRepository, IJwtTokenService jwtTokenService)
         {
             _userRepository = userRepository;
+            _jwtTokenService = jwtTokenService;
         }
 
         public async Task<string> LoginAsync(LoginRequest request, CancellationToken cancellationToken = default)
@@ -22,7 +24,7 @@ namespace TaskManager.Application.Services
                 throw new Exception("Invalid credentials");
             }
 
-            return "User logged in";
+            return _jwtTokenService.GenerateToken(user);
         }
 
         public async Task<string> RegisterAsync(RegisterRequest request, CancellationToken cancellationToken = default)
