@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using TaskManager.Application.Interfaces;
 using TaskManager.Application.Services;
+using TaskManager.Infrastructure.Services;
 using TaskManager.Persistence;
 using TaskManager.Persistence.Repositories;
 
@@ -17,6 +18,8 @@ namespace TaskManager.API
 
             builder.Services.AddScoped<IAuthService, AuthService>();
             builder.Services.AddScoped<IUserRepository, UserRepository>();
+
+            builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
 
             builder.Services.AddControllers();
 
