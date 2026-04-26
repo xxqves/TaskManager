@@ -1,9 +1,6 @@
 using Microsoft.EntityFrameworkCore;
-using TaskManager.Application.Interfaces;
-using TaskManager.Application.Services;
-using TaskManager.Infrastructure.Services;
+using TaskManager.API.Configuration;
 using TaskManager.Persistence;
-using TaskManager.Persistence.Repositories;
 
 namespace TaskManager.API
 {
@@ -13,17 +10,7 @@ namespace TaskManager.API
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            builder.Services.AddDbContext<AppDbContext>(options =>
-                options.UseNpgsql(builder.Configuration.GetConnectionString("AppDbContext")));
-
-            builder.Services.AddScoped<IAuthService, AuthService>();
-            builder.Services.AddScoped<IUserRepository, UserRepository>();
-
-            builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
-
-            builder.Services.AddControllers();
-
-            builder.Services.AddSwaggerGen();
+            builder.Configuration.AddConfiguration(builder.Configuration);
 
             var app = builder.Build();
 
@@ -34,12 +21,7 @@ namespace TaskManager.API
                 dbContext!.Database.Migrate();
             }
 
-            app.UseSwagger();
-            app.UseSwaggerUI();
-
-            app.MapControllers();
-
-            app.MapGet("/", () => Results.Redirect("/swagger"));
+            app.UseApplicationMiddleware();
 
             app.Run();
         }
