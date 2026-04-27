@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi;
 using System.Text;
 using TaskManager.Application.Interfaces;
 using TaskManager.Application.Services;
@@ -22,7 +23,27 @@ namespace TaskManager.API.Configuration
 
             services.AddControllers();
 
-            services.AddSwaggerGen();
+            services.AddSwaggerDocumentation(configuration);
+
+            return services;
+        }
+
+        private static IServiceCollection AddSwaggerDocumentation(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddSwaggerGen(options =>
+            {
+                options.SwaggerDoc("v1", new() { Version = "v1" });
+
+                options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.Http,
+                    Scheme = "bearer",
+                    BearerFormat = "JWT",
+                    In = ParameterLocation.Header,
+                    Description = "Enter: Bearer {your JWT token}"
+                });
+            });
 
             return services;
         }

@@ -7,9 +7,18 @@
             app.UseSwagger();
             app.UseSwaggerUI();
 
-            app.MapControllers();
+            app.Use(async (context, next) =>
+            {
+                if (context.Request.Path == "/")
+                {
+                    context.Response.Redirect("swagger/index.html");
+                    return;
+                };
 
-            app.MapGet("/", () => Results.Redirect("/swagger"));
+                await next();
+            });
+
+            app.MapControllers();
 
             app.UseCookiePolicy(new CookiePolicyOptions
             {
