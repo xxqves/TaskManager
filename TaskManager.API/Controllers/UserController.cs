@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
+using TaskManager.Application.Interfaces;
 
 namespace TaskManager.API.Controllers
 {
@@ -8,19 +8,22 @@ namespace TaskManager.API.Controllers
     [Route("api/users")]
     public class UserController : ControllerBase
     {
+        private readonly ICurrentUserService _currentUserService;
+
+        public UserController(ICurrentUserService currentUserService)
+        {
+            _currentUserService = currentUserService;
+        }
+
         [Authorize]
         [HttpGet("me")]
         public IActionResult Me()
         {
-            var id = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            var email = User.FindFirst(ClaimTypes.Email)?.Value;
-            var role = User.FindFirst(ClaimTypes.Role)?.Value;
-
             return Ok(new
             {
-                Id = id,
-                Email = email,
-                Role = role
+                Id = _currentUserService.UserId,
+                Email = _currentUserService.Email,
+                Role = _currentUserService.Role
             });
         }
     }
