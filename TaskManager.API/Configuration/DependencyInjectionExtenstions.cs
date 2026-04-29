@@ -65,6 +65,7 @@ namespace TaskManager.API.Configuration
             services.AddScoped<IUserRepository, UserRepository>();
 
             services.AddScoped<IJwtTokenService, JwtTokenService>();
+            services.AddSingleton<IPasswordHasher, PasswordHasherService>();
 
             return services;
         }
