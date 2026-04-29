@@ -32,16 +32,21 @@ namespace TaskManager.API.Configuration
         {
             services.AddSwaggerGen(options =>
             {
-                options.SwaggerDoc("v1", new() { Version = "v1" });
-
-                options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                var securityScheme = new OpenApiSecurityScheme
                 {
-                    Name = "Authorization",
-                    Type = SecuritySchemeType.Http,
-                    Scheme = "bearer",
-                    BearerFormat = "JWT",
+                    Name = "JWT Authentication",
+                    Description = "Enter your JWT token in this field",
                     In = ParameterLocation.Header,
-                    Description = "Enter: Bearer {your JWT token}"
+                    Type = SecuritySchemeType.Http,
+                    Scheme = JwtBearerDefaults.AuthenticationScheme,
+                    BearerFormat = "JWT"
+                };
+
+                options.AddSecurityDefinition(JwtBearerDefaults.AuthenticationScheme, securityScheme);
+
+                options.AddSecurityRequirement(document => new OpenApiSecurityRequirement
+                {
+                    [new OpenApiSecuritySchemeReference(JwtBearerDefaults.AuthenticationScheme, document)] = []
                 });
             });
 
