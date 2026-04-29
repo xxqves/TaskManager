@@ -16,6 +16,7 @@
 
         private User(Guid id, string userName, string email, string passwordHash)
         {
+            Id = id;
             UserName = userName;
             Email = email;
             PasswordHash = passwordHash;
