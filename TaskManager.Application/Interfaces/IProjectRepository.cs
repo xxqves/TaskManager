@@ -8,7 +8,7 @@ namespace TaskManager.Application.Interfaces
 
         Task<List<Project>> GetProjectsAsync(CancellationToken cancellationToken = default);
 
-        Task<Guid> UpdateAsync(Guid id, CancellationToken cancellationToken = default);
+        Task<Guid> UpdateAsync(Guid id, string name, Guid ownerId, CancellationToken cancellationToken = default);
 
         Task<Guid> DeleteAsync(Guid id, CancellationToken cancellationToken = default);
     }
