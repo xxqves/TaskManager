@@ -38,6 +38,26 @@ namespace TaskManager.Persistence.Repositories
             return id;
         }
 
+        public async Task<Project> GetProjectByIdAsync(Guid id, CancellationToken cancellationToken = default)
+        {
+            var projectEntity = await _context.Projects
+                .AsNoTracking()
+                .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
+
+            if (projectEntity == null)
+            {
+                return null!;
+            }
+
+            var project = Project.Create(
+                projectEntity!.Id,
+                projectEntity.Name,
+                projectEntity.OwnerId
+            );
+
+            return project;
+        }
+
         public async Task<List<Project>> GetProjectsAsync(CancellationToken cancellationToken = default)
         {
             var projectsEntities = await _context.Projects
