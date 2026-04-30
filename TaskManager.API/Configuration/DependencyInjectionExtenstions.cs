@@ -64,10 +64,11 @@ namespace TaskManager.API.Configuration
         private static IServiceCollection AddAbstractions(this IServiceCollection services)
         {
             services.AddScoped<IAuthService, AuthService>();
-
+            services.AddScoped<IProjectService, ProjectService>();
             services.AddScoped<ICurrentUserService, CurrentUserService>();
 
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IProjectRepository, ProjectRepository>();
 
             services.AddScoped<IJwtTokenService, JwtTokenService>();
             services.AddSingleton<IPasswordHasher, PasswordHasherService>();
