@@ -74,6 +74,23 @@ namespace TaskManager.Persistence.Repositories
             return projects;
         }
 
+        public async Task<List<Project>> GetProjectsByOwnerIdAsync(Guid ownerId, CancellationToken cancellationToken = default)
+        {
+            var projectsEntities = await _context.Projects
+                .AsNoTracking()
+                .Where(x => x.OwnerId == ownerId)
+                .ToListAsync(cancellationToken);
+
+            var projects = projectsEntities
+                .Select(x => Project.Create(
+                    x.Id,
+                    x.Name,
+                    x.OwnerId))
+                .ToList();
+
+            return projects;
+        }
+
         public async Task<Guid> UpdateAsync(Guid id, string name, Guid ownerId, CancellationToken cancellationToken = default)
         {
             await _context.Projects
