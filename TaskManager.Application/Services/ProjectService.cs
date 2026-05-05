@@ -45,7 +45,14 @@ namespace TaskManager.Application.Services
 
         public async Task<List<Project>> GetMyAsync(CancellationToken cancellationToken = default)
         {
-            return await _projectRepository.GetProjectsAsync(cancellationToken);
+            if (_currentUserService.Role == "Admin")
+            {
+                return await _projectRepository.GetProjectsAsync(cancellationToken);
+            }
+            else
+            {
+                return await _projectRepository.GetProjectsByOwnerIdAsync(_currentUserService.UserId, cancellationToken);
+            }
         }
 
         public async Task<Guid> UpdateAsync(Guid id, UpdateProjectRequest request, CancellationToken cancellationToken = default)
