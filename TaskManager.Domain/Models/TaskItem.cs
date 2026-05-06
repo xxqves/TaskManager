@@ -18,13 +18,14 @@
 
         public TaskStatus Status { get; }
 
-        private TaskItem(string title, string description)
+        private TaskItem(Guid id, string title, string description)
         {
+            Id = id;
             Title = title;
             Description = description;
         }
 
-        public static TaskItem Create(string title, string description)
+        public static TaskItem Create(Guid id, string title, string description)
         {
             if (title.Length > MAX_TASKITEM_TITLE_LENGTH)
             {
@@ -36,7 +37,7 @@
                 throw new ArgumentException($"Taskitem description must not exceed {MAX_TASKITEM_DESCRIPTION_LENGTH} characters.");
             }
 
-            return new TaskItem(title, description);
+            return new TaskItem(id, title, description);
         }
     }
 }
