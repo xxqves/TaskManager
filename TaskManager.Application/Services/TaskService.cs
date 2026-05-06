@@ -37,7 +37,10 @@ namespace TaskManager.Application.Services
             }
 
             var task = TaskItem.Create(
-                    
+                Guid.NewGuid(),
+                request.Title,
+                request.Description
+                // надо добавить доп свойства в доменную модель
             );
         }
 
