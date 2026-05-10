@@ -23,6 +23,8 @@
             Id = id;
             Title = title;
             Description = description;
+            ProjectId = projectId;
+            AssignedUserId = assignedUserId;
         }
 
         public static TaskItem Create(Guid id, string title, string description, Guid projectId, Guid assignedUserId, Domain.Enums.TaskStatus taskStatus)

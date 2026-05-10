@@ -21,8 +21,8 @@ namespace TaskManager.Persistence.Repositories
                 Id = item.Id,
                 Title = item.Title,
                 Description = item.Description,
-                AssignedUserId = item.AssignedUserId,
                 ProjectId = item.ProjectId,
+                AssignedUserId = item.AssignedUserId,
                 Status = item.Status
             };
 
