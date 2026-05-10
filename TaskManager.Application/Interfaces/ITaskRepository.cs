@@ -10,7 +10,7 @@ namespace TaskManager.Application.Interfaces
 
         Task<Guid> AddAsync(TaskItem item, CancellationToken cancellationToken = default);
 
-        Task<Guid> UpdateAsync(Guid id, string title, string description, CancellationToken cancellationToken = default);
+        Task<Guid> UpdateAsync(Guid id, string title, string description, Domain.Enums.TaskStatus taskStatus, CancellationToken cancellationToken = default);
 
         Task<Guid> DeleteAsync(Guid id, CancellationToken cancellationToken = default);
     }

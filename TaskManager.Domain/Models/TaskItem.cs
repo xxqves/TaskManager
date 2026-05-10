@@ -16,16 +16,16 @@
 
         public Guid AssignedUserId { get; }
 
-        public TaskStatus Status { get; }
+        public Domain.Enums.TaskStatus Status { get; }
 
-        private TaskItem(Guid id, string title, string description, Guid projectId, Guid assignedUserId, TaskStatus taskStatus)
+        private TaskItem(Guid id, string title, string description, Guid projectId, Guid assignedUserId, Domain.Enums.TaskStatus taskStatus)
         {
             Id = id;
             Title = title;
             Description = description;
         }
 
-        public static TaskItem Create(Guid id, string title, string description, Guid projectId, Guid assignedUserId, TaskStatus taskStatus)
+        public static TaskItem Create(Guid id, string title, string description, Guid projectId, Guid assignedUserId, Domain.Enums.TaskStatus taskStatus)
         {
             if (title.Length > MAX_TASKITEM_TITLE_LENGTH)
             {

@@ -49,8 +49,12 @@ namespace TaskManager.Persistence.Repositories
 
             var tasks = taskEntities
                 .Select(x => TaskItem.Create(
+                    x.Id,
                     x.Title,
-                    x.Description!))
+                    x.Description!,
+                    x.ProjectId,
+                    x.AssignedUserId,
+                    x.Status))
                 .ToList();
 
             return tasks;
@@ -67,12 +71,19 @@ namespace TaskManager.Persistence.Repositories
                 return null!;
             }
 
-            var task = TaskItem.Create(taskEntity.Title, taskEntity.Description!);
+            var task = TaskItem.Create(
+                id,
+                taskEntity.Title,
+                taskEntity.Description!,
+                taskEntity.ProjectId,
+                taskEntity.AssignedUserId,
+                taskEntity.Status
+            );
 
             return task;
         }
 
-        public async Task<Guid> UpdateAsync(Guid id, string title, string description, CancellationToken cancellationToken = default)
+        public async Task<Guid> UpdateAsync(Guid id, string title, string description, Domain.Enums.TaskStatus taskStatus, CancellationToken cancellationToken = default)
         {
             await _context.Tasks
                 .Where(x => x.Id == id)

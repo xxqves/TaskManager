@@ -9,9 +9,9 @@ namespace TaskManager.Application.Interfaces
 
         Task<List<TaskItem>> GetByProjectAsync(Guid projectId, CancellationToken cancellationToken = default);
 
-        Task<Guid> UpdateAsync(UpdateTaskRequest request, CancellationToken cancellationToken = default);
+        Task<Guid> UpdateAsync(Guid id, UpdateTaskRequest request, CancellationToken cancellationToken = default);
 
-        Task<Guid> ChangeStatusAsync(Guid id, CancellationToken cancellationToken = default);
+        Task<Guid> ChangeStatusAsync(Guid id, Domain.Enums.TaskStatus taskStatus, CancellationToken cancellationToken = default);
 
         Task<Guid> DeleteAsync(Guid id, CancellationToken cancellationToken = default);
     }

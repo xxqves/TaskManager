@@ -12,6 +12,6 @@
 
         public Guid AssignedUserId { get; set; }
 
-        public TaskStatus Status { get; set; }
+        public Domain.Enums.TaskStatus Status { get; set; }
     }
 }

@@ -17,9 +17,23 @@ namespace TaskManager.Application.Services
             _currentUserService = currentUserService;
         }
 
-        public Task<Guid> ChangeStatusAsync(Guid id, CancellationToken cancellationToken = default)
+        public async Task<Guid> ChangeStatusAsync(Guid id, Domain.Enums.TaskStatus taskStatus, CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
+            var task = await _repository.GetTaskByIdAsync(id, cancellationToken);
+
+            if (task == null)
+            {
+                throw new Exception("Task not found");
+            }
+
+            var project = await _projectRepository.GetProjectByIdAsync(task.ProjectId, cancellationToken);
+
+            if (project.OwnerId != _currentUserService.UserId && _currentUserService.Role != "Admin")
+            {
+                throw new Exception("Forbidden");
+            }
+
+            return await _repository.UpdateAsync(id, task.Title, task.Description!, taskStatus, cancellationToken);
         }
 
         public async Task<Guid> CreateAsync(CreateTaskRequest request, CancellationToken cancellationToken = default)
@@ -39,24 +53,68 @@ namespace TaskManager.Application.Services
             var task = TaskItem.Create(
                 Guid.NewGuid(),
                 request.Title,
-                request.Description
-                // надо добавить доп свойства в доменную модель
+                request.Description,
+                request.ProjectId,
+                request.AssignedUserId,
+                Domain.Enums.TaskStatus.New
             );
+
+            return await _repository.AddAsync(task, cancellationToken);
         }
 
-        public Task<Guid> DeleteAsync(Guid id, CancellationToken cancellationToken = default)
+        public async Task<Guid> DeleteAsync(Guid id, CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
+            var task = await _repository.GetTaskByIdAsync(id, cancellationToken);
+
+            if (task == null)
+            {
+                throw new Exception("Task not found");
+            }
+
+            var project = await _projectRepository.GetProjectByIdAsync(task.ProjectId, cancellationToken);
+
+            if (project.OwnerId != _currentUserService.UserId && _currentUserService.Role != "Admin")
+            {
+                throw new Exception("Forbidden");
+            }
+
+            return await _repository.DeleteAsync(id, cancellationToken);
         }
 
-        public Task<List<TaskItem>> GetByProjectAsync(Guid projectId, CancellationToken cancellationToken = default)
+        public async Task<List<TaskItem>> GetByProjectAsync(Guid projectId, CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
+            var project = await _projectRepository.GetProjectByIdAsync(projectId, cancellationToken);
+
+            if (project == null)
+            {
+                throw new Exception("Project not found");
+            }
+
+            if (project.OwnerId != _currentUserService.UserId && _currentUserService.Role != "Admin")
+            {
+                throw new Exception("Forbidden");
+            }
+
+            return await _repository.GetByProjectAsync(projectId, cancellationToken);
         }
 
-        public Task<Guid> UpdateAsync(UpdateTaskRequest request, CancellationToken cancellationToken = default)
+        public async Task<Guid> UpdateAsync(Guid id, UpdateTaskRequest request, CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
+            var task = await _repository.GetTaskByIdAsync(id, cancellationToken);
+
+            if (task == null)
+            {
+                throw new Exception("Task not found");
+            }
+
+            var project = await _projectRepository.GetProjectByIdAsync(task.ProjectId, cancellationToken);
+
+            if (project.OwnerId != _currentUserService.UserId && _currentUserService.Role != "Admin")
+            {
+                throw new Exception("Forbidden");
+            }
+
+            return await _repository.UpdateAsync(id, request.Title, request.Description, task.Status, cancellationToken);
         }
     }
 }
