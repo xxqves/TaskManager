@@ -16,15 +16,18 @@
 
         public Guid AssignedUserId { get; }
 
-        public TaskStatus Status { get; }
+        public Domain.Enums.TaskStatus Status { get; }
 
-        private TaskItem(string title, string description)
+        private TaskItem(Guid id, string title, string description, Guid projectId, Guid assignedUserId, Domain.Enums.TaskStatus taskStatus)
         {
+            Id = id;
             Title = title;
             Description = description;
+            ProjectId = projectId;
+            AssignedUserId = assignedUserId;
         }
 
-        public static TaskItem Create(string title, string description)
+        public static TaskItem Create(Guid id, string title, string description, Guid projectId, Guid assignedUserId, Domain.Enums.TaskStatus taskStatus)
         {
             if (title.Length > MAX_TASKITEM_TITLE_LENGTH)
             {
@@ -36,7 +39,7 @@
                 throw new ArgumentException($"Taskitem description must not exceed {MAX_TASKITEM_DESCRIPTION_LENGTH} characters.");
             }
 
-            return new TaskItem(title, description);
+            return new TaskItem(id, title, description, projectId, assignedUserId, taskStatus);
         }
     }
 }

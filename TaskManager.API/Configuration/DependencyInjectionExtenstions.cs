@@ -66,9 +66,11 @@ namespace TaskManager.API.Configuration
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IProjectService, ProjectService>();
             services.AddScoped<ICurrentUserService, CurrentUserService>();
+            services.AddScoped<ITaskService, TaskService>();
 
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IProjectRepository, ProjectRepository>();
+            services.AddScoped<ITaskRepository, TaskRepository>();
 
             services.AddScoped<IJwtTokenService, JwtTokenService>();
             services.AddSingleton<IPasswordHasher, PasswordHasherService>();
